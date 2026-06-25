@@ -95,3 +95,25 @@ Conectar los siguientes **Endpoints**:
 ```
 
 > Ver mas Info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/Healthy-Facility/Health-facilities.md#12-get-appointmentsnurse--horario-de-citas-de-la-enfermera)
+
+
+- **GET /nurse/my-facility**
+
+```json
+{
+  "success": true,
+  "data": {
+    "facilityName": "Posta Médica Los Algarrobos"
+  }
+}
+```
+Caso de que no tenga un posta assignado aun por parte del enfermero.
+
+```json
+{
+"success": false,
+"message": "No tienes una posta asignada actualmente"
+}
+```
+
+> Ver mas Info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/deployment-test/src/context/Healthy-Facility/Health-facilities.md#16-get-nursemy-facility--mi-posta-asignada)
