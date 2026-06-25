@@ -26,7 +26,7 @@
 
 > caso de que el enfermero no tiene una consulta de las madres de un paciente en la bandeja de consultas
 
-<div aling ="center">
+<div align ="center">
 <img src="resources/communication/Sin Consultas.png">
 </div>
 
@@ -231,7 +231,13 @@ Conectar los siguientes **Endpoints**:
 ]
 ```
 
+caso de que la madre no registro un paciente
 
+```json
+  []
+```
+
+---
 > Ver mas [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-mothermotherid--listar-pacientes-por-madre)
 
 
@@ -260,3 +266,72 @@ Conectar los siguientes **Endpoints**:
 
 > Ver mas [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-assign-nurse--asignarse-un-paciente)
 
+# Flujos
+
+## Comunication + Chat
+
+### Scenario 1: Enfermero tiene pacientes asignados sin consultas activas de las madres
+
+<div align="center">
+<img src="resources/communication/Group%20264.png">
+</div>
+
+Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si no hay consultas activas, se muestra un frame de Sin Consultas.
+
+### Scenario 2: Enfermero no tiene pacientes asignados en su cartera
+
+<div align="center">
+<img src="resources/communication/Group%20267.png">
+</div>
+
+Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si no hay pacientes asignados en su cartera, se muestra un frame de Sin Pacientes.
+Y se muestra un boton para asignar pacientes el cual redirecciona a la seccion de pacientes, donde se puede buscar a la madre por dni y asignar a su paciente a la cartera del enfermero.
+
+### Scenario 3: Enferemro tiene consultas activas y busca consultas por nombre de paciente o madre
+
+<div align="center">
+<img src="resources/communication/Group%20266.png">
+</div>
+
+Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si el enfermero realiza una busqueda por nombre de paciente o madre y no hay resultados, se muestra un frame de Sin resultados de busqueda.
+Caso contrario, se muestran las consultas que coinciden con el termino de busqueda.
+
+### Scenario 4: Enfermero tiene consultas activas y abre el chat de la consulta selecionada, envia un mensaje y cierra la consulta
+
+<div align="center">
+<img src="resources/communication/Group%20265.png">
+</div>
+
+Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si el enfermero selecciona una consulta de la bandeja le abrira el chat con la madre el cual podra enviarle un mensaje y cerrar dicha consulta si todo las dudas de la madre se aclaren.
+Dicha Consulta cerrada actualizada la bandeja de consulta el cual dicha consulta cerrada se elimina de la bandeja de consultas.
+
+## Asignacion de pacientes a la cartera del enfemero (Seccion Pacientes)
+
+### Scenario 1: Si la madre encontrada por el dni no tiene pacientes registrados desde FerovaFamily
+
+<div align="center">
+<img src="resources/patient/Group%20261.png">
+</div>
+
+Desde Home cuando accedo a la opcion de pacientes, se redirreciona a un buscador en el cual introducimos el dni de la madre, para assignar a un paciente que ella registro desde Ferova Family.
+Pero Caso de que no registro un paciente la madre desde FerovaFamily, aparecera un frame de no se encontraro niños registrados,
+
+### Scenario 2: Si el enfemero no tiene una posta assignada por parte del admin
+
+<div align="center">
+<img src="resources/patient/Group%20263.png">
+</div>
+
+Desde Home cuando accedo a la opcion de pacientes, se redirreciona a un buscador en el cual introduzco el dni de la madre, para asignar a un paciente que dicha madre registro desde ferovafamily.
+Una vez introducido el dni y selecionar a la madre de la busqueda, se mostraran los pacientes que registro dicha madre, una vez que el enfermero quiere asignar dicho paciente a su cartera se mostrara un mensaje de modal de **Nurse is not assigned to any facilty**, el cual representa de que el enfermero no tiene una posta asignada por parte del admin y no podra asignar a su cartera a dicho paciente seleccionado.
+
+### Scenario 3: Si el enfemero tiene una posta assignada por parte del admin entonces podra assingar a su carter a un paciente
+
+<div align="center">
+<img src="resources/patient/Group%20262.png">
+</div>
+
+Desde Home cuando accedo a la opcion de pacientes se redirreciona a un buscador en el cual introducimos el dni de la madre, para assignar a un paciente que dicha madre registro desde ferovafamily.
+Una vez introducido el dni y seleccionar a la madre de la busqueda, se mostraran los pacientes que registro dicha madre, una vez que el enfermero quiera asignar dicho paciente a su cartera presiona le btn de assignar cambiara el estado del card pasando de **Sin asignar -> Asignado**.
+
+> Ari si es posible haz una animacion al momento de presionar el btn de assignar paciente en si seria bueno la verdad intentalo es un reto (Dyaron lo hizo en si recuerdo bien en Flutter, habla con el de ello).
