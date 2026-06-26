@@ -100,3 +100,203 @@
 <div align="center">
 <img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%202.png">
 </div>
+
+**Endpoints para conectar**
+
+- **GET patients/nurse**
+
+este endpoints lista los pacientes en la cartera del enfermero, se utilizara en los frames de
+la seccion de historial medico y control de hemoglobina para selecionar al paciente para registrar un historial medico o un registro de control de hemoglobina a un paciente.
+
+```json
+[
+  {
+    "patientId": "b77eab3c-3ab7-40b8-9fb3-e4dd7b63d4b6",
+    "fullName": "Mateo Perez",
+    "gender": "MALE",
+    "status": "ACTIVE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+  },
+  {
+    "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
+    "fullName": "Diana Lucia Briceño Vera",
+    "gender": "MALE",
+    "status": "ACTIVE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+  },
+  {
+    "patientId": "8ad97c1d-7a3c-4101-b086-8551b0a85f6a",
+    "fullName": "Daniel Baca",
+    "gender": "MALE",
+    "status": "ACTIVE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+  },
+  {
+    "patientId": "072a086a-68c4-4952-bbf8-0362d23d3a22",
+    "fullName": "Pepe DeTal",
+    "gender": "MALE",
+    "status": "ACTIVE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+  },
+  {
+    "patientId": "40094724-fc8f-44cb-9b34-d349f5de97cb",
+    "fullName": "testeo tal",
+    "gender": "FEMALE",
+    "status": "ACTIVE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+  },
+  {
+    "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+    "fullName": "Paoly Gonzalez",
+    "gender": "FEMALE",
+    "status": "ACTIVE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+  }
+]
+```
+
+caso de que hay un arreglo vacion mostrar el frame de si pacientes assignados y con el btn de assignar pacientes que redirreciona a la seccion pacientes para asignar a un paciente a la cartera de un enfermero
+
+```json
+  []
+```
+> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-nurse--listar-pacientes-asignados)
+
+- **POST /medical-record**
+
+endpoint para crear el historial medico de un paciente selecionado del **patients/nurse**
+
+```json
+    {
+  "patientId": "660e8400-e29b-41d4-a716-446655440001",
+  "weight": 12.5,
+  "height": 85,
+  "motivoConsulta": "Control de rutina y evaluación de crecimiento",
+  "observaciones": "Paciente en buen estado general, activo, sin signos de alarma",
+  "antecedentes": [
+    { "type": "alergia", "description": "Penicilina" },
+    { "type": "antecedente_familiar", "description": "Madre con anemia" }
+  ],
+  "sintomas": ["fiebre", "tos", "decaimiento"]
+}
+```
+**Response 201 Created:**
+
+caso de que fue creado un historial medico mostrar los btons desde la lista pacientes asignados por el enfermero **patients/nurse**
+los btns de ver historial y actualizar
+
+```json
+{ "message": "Medical record created successfully" }
+```
+
+> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-medical-record--crear-historia-cl%C3%ADnica)
+
+
+- **GET /{patientId}/medical-record** 
+
+este endpoint devuelve los datos del paciente el historial clinico y lo contoles en si
+justamente es para el historial medico de un paciente en si.
+----
+
+en el json te deje un <- Importante, es para que cuando crees por primera vez un registro de control de hemoglobina.
+(recuerda la imagen de Frame de Historial medico creado por primera vez el cual en el card de hemoglobina esta el btn de realizar primer control que redireciona al frame de registrar el control de hemoglobina del paciente de dicho historial medico y para esa redireccion de dicho paciente puedes utilizar el **patientId** para registrar el control de hemoglobina de dicho paciente de historial medico)
+
+> bueno tambien el registro de control de hemoglobina puede hacerlo desde home en la parte de acceso rapidos en la opcion registrar control
+
+```json
+{
+  "patient": {
+    "id": "072a086a-68c4-4952-bbf8-0362d23d3a22", <- usar para la redireecion
+    "name": "Pepe",
+    "lastName": "DeTal",
+    "birthDate": "2025-12-09T00:00:00.000Z",
+    "currentWeight": 20,
+    "currentHeight": 148,
+    "motherId": "6a1b179c2b5b07eee905898d",
+    "nurseId": "6a22a5f92b5b07eee90589aa",
+    "gender": "MALE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6",
+    "status": "ACTIVE"
+  },
+  "medicalRecord": {
+    "id": "d43bcf6e-bfdc-4122-a621-87dfb125597a",
+    "createdAt": "2026-06-26T14:03:03.394Z",
+    "updatedAt": "2026-06-26T14:03:03.394Z",
+    "hemoglobinLevel": null, -> Importante
+    "weight": 12.5,
+    "height": 85,
+    "gender": "MALE",
+    "antecedentes": [
+      {
+        "type": "alergia",
+        "description": "Penicilina"
+      }
+    ],
+    "motivoConsulta": "Control de rutina",
+    "observaciones": "Paciente en buen estado general",
+    "controls": [], -> Importante
+    "patientId": "072a086a-68c4-4952-bbf8-0362d23d3a22",
+    "nurseId": "6a22a5f92b5b07eee90589aa",
+    "sintomas": [
+      "fiebre",
+      "tos"
+    ]
+  }
+}
+```
+
+una vez que ya se registro un control de hemoglobina (con el endpoint de acontinuacion que vamos hablar),  
+no se mostrara el btn de registrar primer control ya que tendremos controles de hemoglobina y se mostrar el control mas reciente con el **hemoglobinLevel** y un btn de ver historial (que se explicare mas adelante el documento) en el card.
+(mirar el frame que se mostro en las imagenes de arriba)
+
+```json
+{
+  "patient": {
+    "id": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+    "name": "Paoly",
+    "lastName": "Gonzalez",
+    "birthDate": "2023-06-12T00:00:00.000Z",
+    "currentWeight": 50,
+    "currentHeight": 170,
+    "motherId": "6a1b179c2b5b07eee905898d",
+    "nurseId": "6a22a5f92b5b07eee90589aa",
+    "gender": "FEMALE",
+    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6",
+    "status": "ACTIVE"
+  },
+  "medicalRecord": {
+    "id": "8e2b3ce5-59eb-4bc7-aec7-1ecd2849ad51",
+    "createdAt": "2026-06-21T05:07:56.525Z",
+    "updatedAt": "2026-06-21T05:08:12.309Z",
+    "hemoglobinLevel": 20, <- Importante
+    "weight": 12.5,
+    "height": 85,
+    "gender": "FEMALE",
+    "antecedentes": [
+      {
+        "type": "alergia",
+        "description": "Penicilina"
+      }
+    ],
+    "motivoConsulta": "Control de rutina",
+    "observaciones": "Paciente en buen estado general",
+    "controls": [
+      {
+        "id": "4fcdd88c-132c-4e52-b771-377a7f5b1336",
+        "date": "2026-06-21T05:08:12.308Z",
+        "hemoglobinLevel": 20,
+        "anemiaStatus": "CONTROLLED"
+      }
+    ], <- Importante
+    "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+    "nurseId": "6a22a5f92b5b07eee90589aa",
+    "sintomas": [
+      "fiebre",
+      "tos"
+    ]
+  }
+}
+```
+
+> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-record--historia-cl%C3%ADnica-completa)
+
