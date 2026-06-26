@@ -22,6 +22,13 @@
 <img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico%203.png">
 </div>
 
+> Frame de sin pacientes assignadosen en la cartera en control de hemoglobina
+> Se muestra si no hay pacientes assignados por parte del enfermero en su cartera
+
+<div  align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Control%20de%20hemoglobina-sin%20pacientes.png">
+</div>
+
 > Frame de actualizar
 > Se muestra el frame de actualizar un historial medico, por parte del enfermero el cual se seleciona por el btn de actualizar de un card de la lista de pacientes en la seccion de historial medico.
 
@@ -156,6 +163,7 @@ la seccion de historial medico y control de hemoglobina para selecionar al pacie
 ```
 
 caso de que hay un arreglo vacion mostrar el frame de si pacientes assignados y con el btn de assignar pacientes que redirreciona a la seccion pacientes para asignar a un paciente a la cartera de un enfermero
+tando en la seccion de historial medico como el control de hemoglobina
 
 ```json
   []
@@ -300,3 +308,142 @@ no se mostrara el btn de registrar primer control ya que tendremos controles de 
 
 > Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-record--historia-cl%C3%ADnica-completa)
 
+- **PUT /medical-record/update**
+
+Este endpoint actualiza el historial medico recuerdas el btn que se habilita cuando se crea un historial medico o se registra.
+Pues de dicho historial del paciente podemos actualizarlo y podemos ver los datos actualizados con el endpoint de **/{patientId}/medical-record**
+
+```json
+{
+  "patientId": "660e8400-e29b-41d4-a716-446655440001",
+  "weight": 13.2,
+  "height": 88,
+  "motivoConsulta": "Control de crecimiento y desarrollo",
+  "observaciones": "Paciente con buen apetito, peso adecuado para la edad",
+  "antecedentes": [{ "type": "alergia", "description": "Ninguna conocida" }],
+  "sintomas": ["ninguno"]
+}
+```
+### Response 200 OK:
+
+```json
+{ "message": "Medical record updated successfully" }
+```
+
+> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#put-medical-recordupdate--actualizar-historia-cl%C3%ADnica)
+
+- **POST /hemoglobin-control**
+
+Este endpoint se encarga del registro de control de hemoglobina el cual se da de 3 maneras que los podras ver en el flujo (Observar los flujos).
+
+```json
+{
+  "patientId": "660e8400-e29b-41d4-a716-446655440001",
+  "hemoglobinLevel": 11.2
+}
+```
+
+### Response 200 OK:
+
+```json
+{ "message": "Hemoglobin control registered successfully" }
+```
+
+> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-hemoglobin-control--registrar-control-de-hemoglobina)
+
+
+- **GET /medical-record/{medicalRecordId}/controls**
+
+Este endpoint es pare ver el historial de controles de hemoglobina de un historial medico
+el cual en el frame donde se ve el historial medica ya habiendo dado el primer control, registro el control desde home en registrar control en acceso rapidos o en el mismo historial de control de hemoglobina cuando se presiona el btn de añadir nuevo control. 
+es en el frame donde vemos el historial medico en el card de hemoglobina hay un btn que redirreciona al historial el cual se puede ver dicho historial medico con el promedio y evolucion.
+
+#### Response 200 OK (con datos):
+
+
+```json
+{
+  "patientId": "660e8400-e29b-41d4-a716-446655440001",
+  "patientName": "Mateo Perez",
+  "controls": [
+    { "id": "...", "date": "2026-05-20T10:00:00.000Z", "hemoglobinLevel": 10.5, "anemiaStatus": "MILD" },
+    { "id": "...", "date": "2026-05-22T10:00:00.000Z", "hemoglobinLevel": 11.2, "anemiaStatus": "CONTROLLED" }
+  ],
+  "averageHemoglobin": 10.85,
+  "totalControls": 2,
+  "evolution": 0.7,
+  "trend": "UP"
+}
+```
+
+#### Response 200 OK (sin datos):
+
+```json
+{
+  "patientId": "660e8400-e29b-41d4-a716-446655440001",
+  "patientName": "Mateo",
+  "controls": [],
+  "averageHemoglobin": 0,
+  "totalControls": 0,
+  "evolution": null,
+  "trend": null
+}
+```
+
+> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidcontrols--historial-de-controles)
+
+- **GET /{patientId}/medical-record/check**
+
+> Verifica si un paciente ya tiene una historia clínica registrada. Este endpoint es útil para validar si se puede registrar un control de hemoglobina.
+> Este endpoint debe llamarse antes de mostrar el formulario de registro de hemoglobina. Si hasMedicalRecord es false, se debe mostrar un mensaje indicando que primero debe crearse el historia clínico del paciente seleccionado 
+> y pues aparecera un btn de **Registrar Historial Medico** que lo redirreciona al formulario de registrar historial medico del paciente que se seleciono (te puedes ayudar del id del paciente que se obtiene de este endpoint)
+
+#### Response 200 OK (con historia clínica):
+
+```json
+{
+  "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+  "hasMedicalRecord": true,
+  "medicalRecordId": "880e8400-e29b-41d4-a716-446655440002"
+}
+```
+
+#### Response 200 OK (sin historia clínica):
+
+```json
+{
+  "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+  "hasMedicalRecord": false
+}
+```
+
+> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-recordcheck--verificar-si-tiene-historia-cl%C3%ADnica)
+
+- **GET /medical-record/{medicalRecordId}/pdf** — Descargar historia clínica (PDF)
+
+> Genera y descarga la historia clínica completa en PDF.
+
+#### Response 200 OK 
+
+```
+Content-Type: application/pdf
+Content-Disposition: attachment; filename=medical-record.pdf
+
+[Archivo PDF binario]
+```
+
+> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidpdf--descargar-historia-cl%C3%ADnica-pdf)
+
+- **GET /medical-record/{medicalRecordId}/hemoglobin-report** — Reporte de hemoglobina (PDF)
+
+> Genera y descarga el reporte de evolución de hemoglobina en PDF.
+
+#### Response 200 OK
+
+```
+Content-Type: application/pdf
+Content-Disposition: attachment; filename=hemoglobin-report.pdf
+
+[Archivo PDF binario]
+```
+> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidhemoglobin-report--reporte-de-hemoglobina-pdf)
