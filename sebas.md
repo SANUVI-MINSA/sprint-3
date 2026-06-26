@@ -6,7 +6,7 @@
     <img src="resources\Menu-Ferova-Clinic.png">
 </div>
 
-### Ver Todas las postas
+### Ver Todas las citas
 
 <div align="center">
 <img src="resources/Historial de citas por parte del enfemero.png">
@@ -16,7 +16,7 @@ Conectar los siguientes **Endpoints**:
 
 
 
-- **GET /appointments/nurse/top** -> Agendas de Postas
+- **GET /appointments/nurse/top** -> Agendas de Postas las top 4 en el home
 
 ```json
 {
@@ -59,7 +59,7 @@ Conectar los siguientes **Endpoints**:
 
 > Ver mas Info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/Healthy-Facility/Health-facilities.md#15-get-appointmentsnursetop--top-citas-m%C3%A1s-pr%C3%B3ximas)
 
-- **GET /risk-overview** -> Cuadro de Semaforo + Total de pacientes
+- **GET /risk-overview** -> Cuadro de Semaforo de riesgo
 
 ```json
 {
@@ -73,7 +73,7 @@ Conectar los siguientes **Endpoints**:
 ```
 > Ver mas Info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/treatment-tracking/treatment-tracking.md#get-risk-overview--resumen-de-riesgo)
 
-- **GET /appointments/nurse** -> Ver Todas
+- **GET /appointments/nurse** -> Ver Todas las citas
 
 ```json
 [
@@ -97,7 +97,7 @@ Conectar los siguientes **Endpoints**:
 > Ver mas Info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/Healthy-Facility/Health-facilities.md#12-get-appointmentsnurse--horario-de-citas-de-la-enfermera)
 
 
-- **GET /nurse/my-facility**
+- **GET /nurse/my-facility** -> Ver si tiene una posta asignada
 
 ```json
 {
@@ -107,7 +107,7 @@ Conectar los siguientes **Endpoints**:
   }
 }
 ```
-Caso de que no tenga un posta assignado aun por parte del enfermero.
+Caso de que no tenga una posta assignado aun por parte del enfermero el cual admin lo asigna una posta.
 
 ```json
 {
@@ -117,3 +117,15 @@ Caso de que no tenga un posta assignado aun por parte del enfermero.
 ```
 
 > Ver mas Info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/deployment-test/src/context/Healthy-Facility/Health-facilities.md#16-get-nursemy-facility--mi-posta-asignada)
+
+- **GET /nurse/active-count** -> Ver la cantidad de pacientes activos
+
+```json
+{
+  "nurseId": "6a22a5f92b5b07eee90589aa",
+  "activePatientsCount": 6
+}
+```
+
+
+> Ver ms info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-nurseactive-count--contar-pacientes-activos)
