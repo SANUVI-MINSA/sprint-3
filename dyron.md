@@ -204,7 +204,9 @@ los btns de ver historial y actualizar
 
 este endpoint devuelve los datos del paciente el historial clinico y lo contoles en si
 justamente es para el historial medico de un paciente en si.
-----
+
+<br>
+<br>
 
 en el json te deje un <- Importante, es para que cuando crees por primera vez un registro de control de hemoglobina.
 (recuerda la imagen de Frame de Historial medico creado por primera vez el cual en el card de hemoglobina esta el btn de realizar primer control que redireciona al frame de registrar el control de hemoglobina del paciente de dicho historial medico y para esa redireccion de dicho paciente puedes utilizar el **patientId** para registrar el control de hemoglobina de dicho paciente de historial medico)
