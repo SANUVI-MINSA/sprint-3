@@ -1,119 +1,70 @@
-### Dyron
+# Dyron — Historial Médico y Control de Hemoglobina
 
-#### Seccion de Historial - Añadir Control de Hemoglobina
+> Documentación técnica para el desarrollo de las secciones **Historial Médico** y **Control de Hemoglobina** (app del enfermero). Ambas secciones parten de la lista de pacientes asignados a la cartera del enfermero — asignación que se hace desde la sección Pacientes (a cargo de Ariana).
 
-> Mira en la seccion de historial se obtiene una lista de pacientes asignados a la cartera por parte del enfermero que
-> lo fue asignado en la seccion pacientes (que lo esta haciendo ariana)
+## Índice
 
+1. [Sección: Historial Médico](#1-sección-historial-médico)
+2. [Sección: Control de Hemoglobina](#2-sección-control-de-hemoglobina)
+3. [Flujos](#3-flujos)
+4. [Notas y pendientes](#4-notas-y-pendientes)
+
+---
+
+## 1. Sección: Historial Médico
+
+### 1.1 Pantallas
+
+| Pantalla | Cuándo se muestra |
+|---|---|
+| **Lista de pacientes (Historial Médico)** | Pantalla inicial de la sección. Lista los pacientes de la cartera del enfermero. |
+| **Card con botones "Ver" y "Actualizar"** | Se habilitan en el card de un paciente cuando éste ya tiene un historial médico registrado. |
+| **Sin pacientes asignados (Historial Médico)** | El enfermero no tiene pacientes en su cartera. |
+| **Registrar Historial Médico** | Formulario para crear el historial médico del paciente seleccionado. |
+| **Modal: registrar antecedentes** | Se abre desde el formulario de historial médico para agregar antecedentes. |
+| **Modal: registrar síntomas** | Se abre desde el formulario de historial médico para agregar síntomas. |
+| **Actualizar Historial Médico** | Formulario de edición de un historial médico ya existente (botón "Actualizar" del card). |
+
+**Lista de pacientes (Historial Médico):**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico.png" width="260">
 </div>
 
-> Seccion de Historial de medico con btn de ver y actualizar
-> estos btn se habilitan cuando ya se registo un historial medico por parte del enfermero a un paciente. 
-
+**Card con botones "Ver" y "Actualizar" habilitados:**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico%20(1).png">
+<img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico%20(1).png" width="260">
 </div>
 
-> Frame sin pacientes asignados
-> Se muestra en la seccion de historial medico el cual se mostrar si el enfermo no asigno a un paciente a su cartera
+**Sin pacientes asignados (Historial Médico):**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico%203.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Selecionar%20Paciente%20Historial%20Medico%203.png" width="260">
 </div>
 
-> Frame de sin pacientes assignadosen en la cartera en control de hemoglobina
-> Se muestra si no hay pacientes assignados por parte del enfermero en su cartera
-
-<div  align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Control%20de%20hemoglobina-sin%20pacientes.png">
-</div>
-
-> Frame de actualizar
-> Se muestra el frame de actualizar un historial medico, por parte del enfermero el cual se seleciona por el btn de actualizar de un card de la lista de pacientes en la seccion de historial medico.
-
+**Registrar Historial Médico:**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Actualizar.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Mateo-Historial%20Medico.png" width="260">
 </div>
 
-> Registrar Historial medico del paciente selecionado de la lista pacientes asignados a la cartera por parte del enfermero
-
+**Modal: registrar antecedentes:**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Mateo-Historial%20Medico.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Background+Border+Shadow%20(1).png" width="260">
 </div>
 
-> Modal para el registo de Antecedentes
-> Este modal es para registrar 
-
+**Modal: registrar síntomas:**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Background+Border+Shadow%20(1).png">
+<img src="resources/historial-medico-control-de-hemoglobina/Background+Border+Shadow.png" width="260">
 </div>
 
-> Modal Para el registro de sintomas
-> Este modal es para registrar sintomas en el historial medico
-
+**Actualizar Historial Médico:**
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Background+Border+Shadow.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Actualizar.png" width="260">
 </div>
 
-> Frame de Historial medico creado por primera vez
-> (Si es creado por primera vez no tiene registro de controles de hemoglobina el cual se da presencia de dicho btn en si)
+### 1.2 Endpoints
 
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%203.png">
-</div>
+#### `GET patients/nurse`
 
-> Frame de Control de Hemoglobina
-> Primer frame de lista de pacientes asignados a la cartera del paciente en el contro de hemoglobina para selecionar el paciente y registrar el contro de hemoglobina
-
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Control%20de%20hemoglobina.png">
-</div>
-
-> Frame de Falta de Historial medico
-> al momento de selecionar al paciente de la lista de contro de hemoglobina (que es la lista de pacientes que estan en la cartera del enfermero),
-> si uno no tiene un historial medico no se le podra registrar el contro de hemoglobina
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%2072.png">
-</div>
-
-> Frame de Nuevo Control o Registo de Control de hemoglobina
-> Aca una vez de que el paciente tenga un historial medico, se permitira a registra el control de hemoglobina y no se mostrara el frame de falta historial medico
-
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%204.png">
-</div>
-
-> una vez registrado la hemoglobina ya se por primera vez desde el historial medico o en la seccion home en accesos rapidos en el btn de **registrar control**
-> se vera el ultimo registro de hemoglobina reciente en si en el card de hemoglobina el cual tambien desaperece el btn de realizar primer control, por que ya se registro el primer control.
-> se ver el btn de descargar el cual permite descargar el historial medico en pdf
-
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%201.png">
-</div>
-
-> Historial de Control de Hemoglobina
-> En este frame se ve el historial de controles de hemoglobina, viendo el promedio, la evolucion en si datos calculados del backend,
-> esta el btn de descargar el cual tambien descargar el historial de control de hemoglobina, tambien esta el btn de añadir un nuevo control
-> el cual nos redireciona al frame de Nuevo Control o Registo de Control de hemoglobina, el cual registramos un nuevo control de hemoglobina en si.
-
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%207.png">
-</div>
-
-> Historial de contol de hemoglobina
-> Muestra de otros historiales registrados
-
-<div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%202.png">
-</div>
-
-**Endpoints para conectar**
-
-- **GET patients/nurse**
-
-este endpoints lista los pacientes en la cartera del enfermero, se utilizara en los frames de
-la seccion de historial medico y control de hemoglobina para selecionar al paciente para registrar un historial medico o un registro de control de hemoglobina a un paciente.
+Lista los pacientes en la cartera del enfermero. Se usa tanto en **Historial Médico** como en **Control de Hemoglobina** (sección 2) para seleccionar al paciente sobre el que se va a registrar información.
 
 ```json
 [
@@ -162,20 +113,23 @@ la seccion de historial medico y control de hemoglobina para selecionar al pacie
 ]
 ```
 
-caso de que hay un arreglo vacion mostrar el frame de si pacientes assignados y con el btn de assignar pacientes que redirreciona a la seccion pacientes para asignar a un paciente a la cartera de un enfermero
-tando en la seccion de historial medico como el control de hemoglobina
+Caso de arreglo vacío → mostrar el frame **Sin pacientes asignados**, con un botón "Asignar pacientes" que redirige a la sección Pacientes. Esto aplica tanto en Historial Médico como en Control de Hemoglobina:
 
 ```json
-  []
+[]
 ```
-> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-nurse--listar-pacientes-asignados)
 
-- **POST /medical-record**
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-nurse--listar-pacientes-asignados)
 
-endpoint para crear el historial medico de un paciente selecionado del **patients/nurse**
+---
 
+#### `POST /medical-record`
+
+Crea el historial médico de un paciente seleccionado desde `GET patients/nurse`.
+
+**Request body:**
 ```json
-    {
+{
   "patientId": "660e8400-e29b-41d4-a716-446655440001",
   "weight": 12.5,
   "height": 85,
@@ -188,35 +142,27 @@ endpoint para crear el historial medico de un paciente selecionado del **patient
   "sintomas": ["fiebre", "tos", "decaimiento"]
 }
 ```
-**Response 201 Created:**
 
-caso de que fue creado un historial medico mostrar los btons desde la lista pacientes asignados por el enfermero **patients/nurse**
-los btns de ver historial y actualizar
-
+**Response 201 Created**
 ```json
 { "message": "Medical record created successfully" }
 ```
 
-> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-medical-record--crear-historia-cl%C3%ADnica)
+Una vez creado, en el card de ese paciente (dentro de `GET patients/nurse`) se habilitan los botones **"Ver historial"** y **"Actualizar"**.
 
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-medical-record--crear-historia-cl%C3%ADnica)
 
-- **GET /{patientId}/medical-record** 
+---
 
-este endpoint devuelve los datos del paciente el historial clinico y lo contoles en si
-justamente es para el historial medico de un paciente en si.
+#### `GET /{patientId}/medical-record`
 
-<br>
-<br>
+Devuelve los datos del paciente junto con su historial médico y sus controles de hemoglobina.
 
-en el json te deje un <- Importante, es para que cuando crees por primera vez un registro de control de hemoglobina.
-(recuerda la imagen de Frame de Historial medico creado por primera vez el cual en el card de hemoglobina esta el btn de realizar primer control que redireciona al frame de registrar el control de hemoglobina del paciente de dicho historial medico y para esa redireccion de dicho paciente puedes utilizar el **patientId** para registrar el control de hemoglobina de dicho paciente de historial medico)
-
-> bueno tambien el registro de control de hemoglobina puede hacerlo desde home en la parte de acceso rapidos en la opcion registrar control
-
+**Caso: historial recién creado, sin controles de hemoglobina aún**
 ```json
 {
   "patient": {
-    "id": "072a086a-68c4-4952-bbf8-0362d23d3a22", <- usar para la redireecion
+    "id": "072a086a-68c4-4952-bbf8-0362d23d3a22",
     "name": "Pepe",
     "lastName": "DeTal",
     "birthDate": "2025-12-09T00:00:00.000Z",
@@ -232,32 +178,30 @@ en el json te deje un <- Importante, es para que cuando crees por primera vez un
     "id": "d43bcf6e-bfdc-4122-a621-87dfb125597a",
     "createdAt": "2026-06-26T14:03:03.394Z",
     "updatedAt": "2026-06-26T14:03:03.394Z",
-    "hemoglobinLevel": null, -> Importante
+    "hemoglobinLevel": null,
     "weight": 12.5,
     "height": 85,
     "gender": "MALE",
     "antecedentes": [
-      {
-        "type": "alergia",
-        "description": "Penicilina"
-      }
+      { "type": "alergia", "description": "Penicilina" }
     ],
     "motivoConsulta": "Control de rutina",
     "observaciones": "Paciente en buen estado general",
-    "controls": [], -> Importante
+    "controls": [],
     "patientId": "072a086a-68c4-4952-bbf8-0362d23d3a22",
     "nurseId": "6a22a5f92b5b07eee90589aa",
-    "sintomas": [
-      "fiebre",
-      "tos"
-    ]
+    "sintomas": ["fiebre", "tos"]
   }
 }
 ```
 
-una vez que ya se registro un control de hemoglobina (con el endpoint de acontinuacion que vamos hablar),  
-no se mostrara el btn de registrar primer control ya que tendremos controles de hemoglobina y se mostrar el control mas reciente con el **hemoglobinLevel** y un btn de ver historial (que se explicare mas adelante el documento) en el card.
-(mirar el frame que se mostro en las imagenes de arriba)
+> 🔑 **Campos clave:**
+> - `patient.id` → úsalo para redirigir al formulario de registro de control de hemoglobina de este paciente (ver frame "Historial médico creado por primera vez", sección 2.1).
+> - `medicalRecord.hemoglobinLevel: null` junto con `controls: []` → significa que el paciente **aún no tiene ningún control de hemoglobina registrado**. En este caso se muestra el botón **"Realizar primer control"** en el card de hemoglobina.
+
+**Caso: ya tiene al menos un control de hemoglobina registrado**
+
+Una vez registrado el primer control (ver `POST /hemoglobin-control` en la sección 2.2), `hemoglobinLevel` deja de ser `null` y refleja el valor del control más reciente, y `controls` deja de estar vacío. El botón "Realizar primer control" desaparece y se muestra el control más reciente junto con un botón "Ver historial":
 
 ```json
 {
@@ -278,15 +222,12 @@ no se mostrara el btn de registrar primer control ya que tendremos controles de 
     "id": "8e2b3ce5-59eb-4bc7-aec7-1ecd2849ad51",
     "createdAt": "2026-06-21T05:07:56.525Z",
     "updatedAt": "2026-06-21T05:08:12.309Z",
-    "hemoglobinLevel": 20, <- Importante
+    "hemoglobinLevel": 20,
     "weight": 12.5,
     "height": 85,
     "gender": "FEMALE",
     "antecedentes": [
-      {
-        "type": "alergia",
-        "description": "Penicilina"
-      }
+      { "type": "alergia", "description": "Penicilina" }
     ],
     "motivoConsulta": "Control de rutina",
     "observaciones": "Paciente en buen estado general",
@@ -297,24 +238,25 @@ no se mostrara el btn de registrar primer control ya que tendremos controles de 
         "hemoglobinLevel": 20,
         "anemiaStatus": "CONTROLLED"
       }
-    ], <- Importante
+    ],
     "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
     "nurseId": "6a22a5f92b5b07eee90589aa",
-    "sintomas": [
-      "fiebre",
-      "tos"
-    ]
+    "sintomas": ["fiebre", "tos"]
   }
 }
 ```
 
-> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-record--historia-cl%C3%ADnica-completa)
+> El registro de control de hemoglobina también puede hacerse desde Home, en accesos rápidos → "Registrar control" (ver Flujo 4, sección 3).
 
-- **PUT /medical-record/update**
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-record--historia-cl%C3%ADnica-completa)
 
-Este endpoint actualiza el historial medico recuerdas el btn que se habilita cuando se crea un historial medico o se registra.
-Pues de dicho historial del paciente podemos actualizarlo y podemos ver los datos actualizados con el endpoint de **/{patientId}/medical-record**
+---
 
+#### `PUT /medical-record/update`
+
+Actualiza el historial médico de un paciente (se habilita junto con el botón "Actualizar" una vez que el historial fue creado). Los datos actualizados se reflejan luego en `GET /{patientId}/medical-record`.
+
+**Request body:**
 ```json
 {
   "patientId": "660e8400-e29b-41d4-a716-446655440001",
@@ -326,18 +268,123 @@ Pues de dicho historial del paciente podemos actualizarlo y podemos ver los dato
   "sintomas": ["ninguno"]
 }
 ```
-### Response 200 OK:
 
+**Response 200 OK**
 ```json
 { "message": "Medical record updated successfully" }
 ```
 
-> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#put-medical-recordupdate--actualizar-historia-cl%C3%ADnica)
 
-- **POST /hemoglobin-control**
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#put-medical-recordupdate--actualizar-historia-cl%C3%ADnica)
 
-Este endpoint se encarga del registro de control de hemoglobina el cual se da de 3 maneras que los podras ver en el flujo (Observar los flujos).
+---
 
+#### `GET /medical-record/{medicalRecordId}/pdf` — Descargar historia clínica (PDF)
+
+Genera y descarga la historia clínica completa en PDF.
+
+```
+Content-Type: application/pdf
+Content-Disposition: attachment; filename=medical-record.pdf
+
+[Archivo PDF binario]
+```
+
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidpdf--descargar-historia-cl%C3%ADnica-pdf)
+
+---
+
+## 2. Sección: Control de Hemoglobina
+
+### 2.1 Pantallas
+
+| Pantalla | Cuándo se muestra |
+|---|---|
+| **Historial médico creado por primera vez** | El historial no tiene controles de hemoglobina aún → aparece el botón "Realizar primer control". |
+| **Lista de pacientes (Control de Hemoglobina)** | Pantalla inicial de la sección: lista de pacientes de la cartera para seleccionar y registrar un control. |
+| **Sin pacientes asignados (Control de Hemoglobina)** | El enfermero no tiene pacientes en su cartera. |
+| **Falta historial médico** | Al seleccionar un paciente sin historial médico, no se puede registrar el control todavía. |
+| **Nuevo control de hemoglobina** | Formulario de registro, disponible una vez que el paciente ya tiene historial médico. |
+| **Card de hemoglobina (con último registro)** | Tras el primer control, muestra el valor más reciente y el botón de descargar PDF. |
+| **Historial de Control de Hemoglobina** | Lista de todos los controles, con promedio, evolución, tendencia, botón de descargar y botón de añadir nuevo control. |
+
+**Historial médico creado por primera vez:**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%203.png" width="260">
+</div>
+
+**Lista de pacientes (Control de Hemoglobina):**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Control%20de%20hemoglobina.png" width="260">
+</div>
+
+**Sin pacientes asignados (Control de Hemoglobina):**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Control%20de%20hemoglobina-sin%20pacientes.png" width="260">
+</div>
+
+**Falta historial médico:**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%2072.png" width="260">
+</div>
+
+**Nuevo control de hemoglobina:**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%204.png" width="260">
+</div>
+
+**Card de hemoglobina con último registro (+ botón descargar PDF):**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%201.png" width="260">
+</div>
+
+**Historial de Control de Hemoglobina (promedio, evolución, descargar, añadir control):**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%207.png" width="260">
+</div>
+
+**Historial de control de otro paciente (ejemplo adicional):**
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/iPhone%2017%20-%202.png" width="260">
+</div>
+
+### 2.2 Endpoints
+
+> Esta sección también usa `GET patients/nurse` y `GET /{patientId}/medical-record`, ya documentados en la sección 1.2.
+
+#### `GET /{patientId}/medical-record/check`
+
+Verifica si un paciente ya tiene una historia clínica registrada. Debe llamarse **antes de mostrar el formulario de registro de control de hemoglobina**.
+
+- Si `hasMedicalRecord` es `false` → mostrar el frame "Falta historial médico", con un botón **"Registrar Historial Médico"** que redirige al formulario de creación (`POST /medical-record`), usando el `patientId` que devuelve este mismo endpoint.
+- Si `hasMedicalRecord` es `true` → continuar al formulario de registro de control de hemoglobina.
+
+**Response 200 OK (con historia clínica):**
+```json
+{
+  "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+  "hasMedicalRecord": true,
+  "medicalRecordId": "880e8400-e29b-41d4-a716-446655440002"
+}
+```
+
+**Response 200 OK (sin historia clínica):**
+```json
+{
+  "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
+  "hasMedicalRecord": false
+}
+```
+
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-recordcheck--verificar-si-tiene-historia-cl%C3%ADnica)
+
+---
+
+#### `POST /hemoglobin-control`
+
+Registra un control de hemoglobina. Se usa en 3 puntos distintos de la app (ver Flujos, sección 3).
+
+**Request body:**
 ```json
 {
   "patientId": "660e8400-e29b-41d4-a716-446655440001",
@@ -345,24 +392,39 @@ Este endpoint se encarga del registro de control de hemoglobina el cual se da de
 }
 ```
 
-### Response 200 OK:
-
+**Response 200 OK**
 ```json
 { "message": "Hemoglobin control registered successfully" }
 ```
 
-> Ver mas info [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-hemoglobin-control--registrar-control-de-hemoglobina)
+**Cálculo automático de anemia:**
+
+| Resultado | Rango |
+|-----------|-------|
+| SEVERE    |< 7.0|
+| MODERATE    |7.0 – 8.9|
+| MILD    |9.0 – 10.9|
+| CONTROLLED    |≥ 11.0|
 
 
-- **GET /medical-record/{medicalRecordId}/controls**
 
-Este endpoint es pare ver el historial de controles de hemoglobina de un historial medico
-el cual en el frame donde se ve el historial medica ya habiendo dado el primer control, registro el control desde home en registrar control en acceso rapidos o en el mismo historial de control de hemoglobina cuando se presiona el btn de añadir nuevo control. 
-es en el frame donde vemos el historial medico en el card de hemoglobina hay un btn que redirreciona al historial el cual se puede ver dicho historial medico con el promedio y evolucion.
+**Errores 400:**
 
-#### Response 200 OK (con datos):
+| Error                     | Causa  |
+|---------------------------|--------|
+| Medical record not found  |Sin historia clínica|
+| Hemoglobin level must be between 0 and 30  |Nivel fuera de rango|
+| Access denied: This patient is not assigned to you  |Paciente no asignado|
 
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-hemoglobin-control--registrar-control-de-hemoglobina)
 
+---
+
+#### `GET /medical-record/{medicalRecordId}/controls`
+
+Devuelve el historial de controles de hemoglobina de un historial médico, con promedio y evolución calculados por el backend. Se usa en el frame "Historial de Control de Hemoglobina", al que se llega desde el botón correspondiente en el card de hemoglobina.
+
+**Response 200 OK (con datos):**
 ```json
 {
   "patientId": "660e8400-e29b-41d4-a716-446655440001",
@@ -378,8 +440,7 @@ es en el frame donde vemos el historial medico en el card de hemoglobina hay un 
 }
 ```
 
-#### Response 200 OK (sin datos):
-
+**Response 200 OK (sin datos):**
 ```json
 {
   "patientId": "660e8400-e29b-41d4-a716-446655440001",
@@ -392,55 +453,19 @@ es en el frame donde vemos el historial medico en el card de hemoglobina hay un 
 }
 ```
 
-> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidcontrols--historial-de-controles)
+La tendencia se calcula como: último nivel – primer nivel
+    
+- UP: evolución > 0 (mejorando)
+- DOWN: evolución < 0 (empeorando)
+- STABLE: evolución = 0
 
-- **GET /{patientId}/medical-record/check**
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidcontrols--historial-de-controles)
 
-> Verifica si un paciente ya tiene una historia clínica registrada. Este endpoint es útil para validar si se puede registrar un control de hemoglobina.
-> Este endpoint debe llamarse antes de mostrar el formulario de registro de hemoglobina. Si hasMedicalRecord es false, se debe mostrar un mensaje indicando que primero debe crearse el historia clínico del paciente seleccionado 
-> y pues aparecera un btn de **Registrar Historial Medico** que lo redirreciona al formulario de registrar historial medico del paciente que se seleciono (te puedes ayudar del id del paciente que se obtiene de este endpoint)
+---
 
-#### Response 200 OK (con historia clínica):
+#### `GET /medical-record/{medicalRecordId}/hemoglobin-report` — Reporte de hemoglobina (PDF)
 
-```json
-{
-  "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
-  "hasMedicalRecord": true,
-  "medicalRecordId": "880e8400-e29b-41d4-a716-446655440002"
-}
-```
-
-#### Response 200 OK (sin historia clínica):
-
-```json
-{
-  "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
-  "hasMedicalRecord": false
-}
-```
-
-> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-patientidmedical-recordcheck--verificar-si-tiene-historia-cl%C3%ADnica)
-
-- **GET /medical-record/{medicalRecordId}/pdf** — Descargar historia clínica (PDF)
-
-> Genera y descarga la historia clínica completa en PDF.
-
-#### Response 200 OK 
-
-```
-Content-Type: application/pdf
-Content-Disposition: attachment; filename=medical-record.pdf
-
-[Archivo PDF binario]
-```
-
-> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidpdf--descargar-historia-cl%C3%ADnica-pdf)
-
-- **GET /medical-record/{medicalRecordId}/hemoglobin-report** — Reporte de hemoglobina (PDF)
-
-> Genera y descarga el reporte de evolución de hemoglobina en PDF.
-
-#### Response 200 OK
+Genera y descarga el reporte de evolución de hemoglobina en PDF.
 
 ```
 Content-Type: application/pdf
@@ -448,48 +473,59 @@ Content-Disposition: attachment; filename=hemoglobin-report.pdf
 
 [Archivo PDF binario]
 ```
-> Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidhemoglobin-report--reporte-de-hemoglobina-pdf)
 
-#### Flujos UX
+> Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidhemoglobin-report--reporte-de-hemoglobina-pdf)
 
-##### Scenario 1: Crear, Actualizar y Ver Historial Medico
+---
 
-> Este flujo representa la creacion actualizacion y observacion
-> Desde Home navegamos a historial medico en el nos da la lista de pacientes que estan en la cartera del medico
-> Seleciona un paciente del historial y me lleva al registro de un historial medico una vez creado
-> se activa dos btns el cual nos permite ver la creacion del registro de historial medico.
-> y actualizacion de un historial medico del paciente selecionado en si.
+## 3. Flujos
+
+### Escenario 1 — Crear, actualizar y ver el Historial Médico
 
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Group%20271.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20271.png" width="280">
 </div>
 
-##### Scenario 2: Registro de primer control de hemoglobina desde historial medico creado por primera vez
+1. Desde Home, el enfermero entra a "Historial Médico".
+2. Se muestra la lista de pacientes de su cartera (`GET patients/nurse`).
+3. Selecciona un paciente sin historial médico → se abre el formulario de registro (`POST /medical-record`), donde puede agregar antecedentes y síntomas mediante los modales correspondientes.
+4. Una vez creado, en el card de ese paciente se habilitan los botones **"Ver"** y **"Actualizar"**.
+5. **"Ver"** muestra los datos del historial (`GET /{patientId}/medical-record`); **"Actualizar"** abre el formulario de edición (`PUT /medical-record/update`).
 
-> Registrar o añadir un control de hemoglobina por primera vez de un historial medico recien creado
+### Escenario 2 — Primer control de hemoglobina desde un historial médico recién creado
 
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Group%20272.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20272.png" width="280">
 </div>
 
-#### Scenario 3: Registro de hemoglobina desde el historial de controles de hemgolbina
+1. Tras crear un historial médico por primera vez (Escenario 1), el card de hemoglobina no muestra ningún control (`hemoglobinLevel: null`, `controls: []`).
+2. Se muestra el botón **"Realizar primer control"**.
+3. Al presionarlo, se abre el formulario de registro de control de hemoglobina, usando el `patientId` de ese historial (`POST /hemoglobin-control`).
+4. Tras registrar, el botón "Realizar primer control" desaparece y se muestra el control más reciente en el card.
 
-> Registrar desde el historial medico un nuevo control
->
+### Escenario 3 — Registro de hemoglobina desde el historial de controles
 
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Group%20273.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20273.png" width="280">
 </div>
 
-#### Scenario 4: Registro de hemoglobina desde los accesos rapidos desde el home
-> Desde home en accesos podemos registrar un control de hemoglobina a un pacientes
-> de nuestra lista de pacientes assignados selecionamos uno y nos permitira registrar
-> un control de hemoglobina al paciente selecionado, y se presenta un frame de celebracion
-> y volvemos a la lista de pacientes de la cartera del enfermero de la seccion de control de hemoglobina.
-> 
-> Caso contrario de que al momento de seleccionar dicho paciente no tiene un historial medico aparece el frame
-> de que falta un historial medico para ese paciente que selecionamos con un btn d registrar
-> el historial medico de dicho paciente.
+1. Desde el historial médico, el enfermero presiona "Ver historial" en el card de hemoglobina → se abre el Historial de Controles (`GET /medical-record/{medicalRecordId}/controls`), con promedio, evolución y tendencia.
+2. Presiona **"Añadir nuevo control"** → se abre el formulario de nuevo control (`POST /hemoglobin-control`).
+3. El nuevo control se agrega a la lista y se recalculan promedio/evolución/tendencia.
+
+### Escenario 4 — Registro de hemoglobina desde accesos rápidos en Home
+
 <div align="center">
-<img src="resources/historial-medico-control-de-hemoglobina/Group%20274.png">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20274.png" width="280">
 </div>
+
+1. Desde Home, el enfermero entra a "Registrar control" (accesos rápidos).
+2. Se muestra la lista de pacientes de su cartera (`GET patients/nurse`).
+3. Selecciona un paciente.
+4. Se verifica si tiene historial médico (`GET /{patientId}/medical-record/check`):
+    - Si `hasMedicalRecord` es `false` → se muestra el frame **"Falta historial médico"**, con un botón para registrar el historial de ese paciente primero (`POST /medical-record`).
+    - Si `hasMedicalRecord` es `true` → se abre el formulario de registro de control (`POST /hemoglobin-control`).
+5. Al registrar el control exitosamente, se muestra un frame de celebración y se vuelve a la lista de pacientes de Control de Hemoglobina.
+
+> ⚠️ No se incluyó una captura del frame de "celebración" mencionado en este paso — falta ese asset visual eso lo haces vos dyron un frame de celbracion por el registro de un control de hemoglobina.
+
