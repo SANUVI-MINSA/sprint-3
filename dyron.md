@@ -449,3 +449,47 @@ Content-Disposition: attachment; filename=hemoglobin-report.pdf
 [Archivo PDF binario]
 ```
 > Ver mas info: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-medical-recordmedicalrecordidhemoglobin-report--reporte-de-hemoglobina-pdf)
+
+#### Flujos UX
+
+##### Scenario 1: Crear, Actualizar y Ver Historial Medico
+
+> Este flujo representa la creacion actualizacion y observacion
+> Desde Home navegamos a historial medico en el nos da la lista de pacientes que estan en la cartera del medico
+> Seleciona un paciente del historial y me lleva al registro de un historial medico una vez creado
+> se activa dos btns el cual nos permite ver la creacion del registro de historial medico.
+> y actualizacion de un historial medico del paciente selecionado en si.
+
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20271.png">
+</div>
+
+##### Scenario 2: Registro de primer control de hemoglobina desde historial medico creado por primera vez
+
+> Registrar o añadir un control de hemoglobina por primera vez de un historial medico recien creado
+
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20272.png">
+</div>
+
+#### Scenario 3: Registro de hemoglobina desde el historial de controles de hemgolbina
+
+> Registrar desde el historial medico un nuevo control
+>
+
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20273.png">
+</div>
+
+#### Scenario 4: Registro de hemoglobina desde los accesos rapidos desde el home
+> Desde home en accesos podemos registrar un control de hemoglobina a un pacientes
+> de nuestra lista de pacientes assignados selecionamos uno y nos permitira registrar
+> un control de hemoglobina al paciente selecionado, y se presenta un frame de celebracion
+> y volvemos a la lista de pacientes de la cartera del enfermero de la seccion de control de hemoglobina.
+> 
+> Caso contrario de que al momento de seleccionar dicho paciente no tiene un historial medico aparece el frame
+> de que falta un historial medico para ese paciente que selecionamos con un btn d registrar
+> el historial medico de dicho paciente.
+<div align="center">
+<img src="resources/historial-medico-control-de-hemoglobina/Group%20274.png">
+</div>
