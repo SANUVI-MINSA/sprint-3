@@ -1,203 +1,251 @@
-### Ariana
+# Ariana — Módulo de Comunicación y Pacientes
 
-#### Seccion de Comunicacion + Chat
+> Documentación técnica para el desarrollo de las secciones **Comunicación + Chat** y **Pacientes** (app del enfermero).
 
-> se redirecciona a este frame cuando seleciona en el nav inferior la opcion de consultas
+## Índice
+
+1. [Sección: Comunicación + Chat](#1-sección-comunicación--chat)
+2. [Sección: Pacientes](#2-sección-pacientes)
+3. [Flujos](#3-flujos)
+4. [Notas y pendientes](#4-notas-y-pendientes)
+
+---
+
+## 1. Sección: Comunicación + Chat
+
+### 1.1 Pantallas
+
+| Pantalla | Cuándo se muestra |
+|---|---|
+| **Bandeja de Consultas** | Al seleccionar "Consultas" en el nav inferior. Lista las consultas activas de las madres. |
+| **Chat** | Al seleccionar una consulta (card) desde la Bandeja de Consultas. |
+| **Modal "¿Cerrar consulta?"** | Al presionar el botón de cerrar dentro del chat, para confirmar o cancelar el cierre. |
+| **Sin Consultas** | El enfermero tiene pacientes asignados, pero ninguna madre tiene una consulta activa. |
+| **Sin Pacientes** | El enfermero no tiene pacientes asignados en su cartera. |
+| **Sin Resultados de Búsqueda** | La búsqueda por nombre de paciente o madre no arroja resultados. |
 
 <div align="center">
-    <img src="resources/communication/Bandeja de Consultas.png">
+    <img src="resources/communication/Bandeja de Consultas.png" width="260">
 </div>
-
-
-> el chat se abre cuando seleciono un card de la bandeja de consultas
 
 <div align="center">
-    <img src="resources/communication/chat.png">
+    <img src="resources/communication/chat.png" width="260">
 </div>
 
-> Modal para decidir si el enfermero quiere cerrar una consulta (ocurre al momento de presionar el btn de cerrar)
-
-<div align ="center">
-<img src="resources/communication/modal-decision-cerrar.png">
+<div align="center">
+    <img src="resources/communication/modal-decision-cerrar.png" width="260">
 </div>
 
-
-#### Frame sin Consultas
-
-> caso de que el enfermero no tiene una consulta de las madres de un paciente en la bandeja de consultas
-
-<div align ="center">
-<img src="resources/communication/Sin Consultas.png">
+<div align="center">
+    <img src="resources/communication/Sin Consultas.png" width="260">
 </div>
 
-#### Frame de Sin Pacientes
-
-> caso de que el enfermero no tiene enfermeros en su cartera
-
-<div align ="center">
-<img src="resources/communication/Sin pacientes asignados 0.png">
+<div align="center">
+    <img src="resources/communication/Sin pacientes asignados 0.png" width="260">
 </div>
 
-#### Frame Sin Resultados de Busqueda
-
-<div align ="center">
-<img src="resources/communication/Sin resultados de Busqueda.png">
+<div align="center">
+    <img src="resources/communication/Sin resultados de Busqueda.png" width="260">
 </div>
 
+### 1.2 Endpoints
 
-Conectar los siguientes **Endpoints**:
+#### `GET /communication/consultations/nurse?searchTerm=`
 
+Devuelve las consultas activas del enfermero. El campo `status` de la respuesta indica qué pantalla mostrar:
 
-- **GET /communication/consultations/nurse?searchTerm=**
+| `status` | Pantalla a mostrar |
+|---|---|
+| *(array con datos, sin campo `status`)* | Bandeja de Consultas, con la lista |
+| `NO_CONSULTAS` | Frame "Sin Consultas" |
+| `SIN_PACIENTES` | Frame "Sin Pacientes" |
+| `BUSQUEDA_SIN_RESULTADOS` | Frame "Sin Resultados de Búsqueda" |
 
-**Escenario 1: Con consultas activas**
+**Escenario 1 — Con consultas activas**
 
 ```json
 [
-    {
-        "consultationId": "string",
-        "patientId": "string",
-        "patientName": "Mateo Pérez",
-        "motherId": "string",
-        "motherName": "Ana Pérez",
-        "nurseId": "string",
-        "nurseName": "María González",
-        "lastMessage": "Gracias enfermera, aplicaré la indicación...",
-        "lastMessageDate": "2024-01-15T10:30:00.000Z",
-        "createdAt": "2024-01-15T10:00:00.000Z",
-        "messageCount": 5
-    },
-    {
-        "consultationId": "string",
-        "patientId": "string",
-        "patientName": "Valentina Gómez",
-        "motherId": "string",
-        "motherName": "María Gómez",
-        "nurseId": "string",
-        "nurseName": "María González",
-        "lastMessage": "Mi hija tiene fiebre...",
-        "lastMessageDate": "2024-01-15T11:00:00.000Z",
-        "createdAt": "2024-01-15T10:30:00.000Z",
-        "messageCount": 3
-    }
+  {
+    "consultationId": "string",
+    "patientId": "string",
+    "patientName": "Mateo Pérez",
+    "motherId": "string",
+    "motherName": "Ana Pérez",
+    "nurseId": "string",
+    "nurseName": "María González",
+    "lastMessage": "Gracias enfermera, aplicaré la indicación...",
+    "lastMessageDate": "2024-01-15T10:30:00.000Z",
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "messageCount": 5
+  },
+  {
+    "consultationId": "string",
+    "patientId": "string",
+    "patientName": "Valentina Gómez",
+    "motherId": "string",
+    "motherName": "María Gómez",
+    "nurseId": "string",
+    "nurseName": "María González",
+    "lastMessage": "Mi hija tiene fiebre...",
+    "lastMessageDate": "2024-01-15T11:00:00.000Z",
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "messageCount": 3
+  }
 ]
 ```
 
-**Escenario 2: Tiene pacientes asignados pero NO tiene consultas activas** -> Mostrar frame de Sin Consultas
+**Escenario 2 — Tiene pacientes asignados pero NO tiene consultas activas** → Frame "Sin Consultas"
 
 ```json
 {
-    "consultations": [],
-    "message": "No tienes consultas activas aún",
-    "detail": "Las madres pueden iniciar consultas para sus hijos. Cuando una madre inicie una consulta, aparecerá aquí.",
-    "status": "NO_CONSULTAS"
+  "consultations": [],
+  "message": "No tienes consultas activas aún",
+  "detail": "Las madres pueden iniciar consultas para sus hijos. Cuando una madre inicie una consulta, aparecerá aquí.",
+  "status": "NO_CONSULTAS"
 }
 ```
 
-**Escenario 3: NO tiene pacientes asignados en su cartera** -> Mostrar Frame de Sin Pacientes
+**Escenario 3 — NO tiene pacientes asignados en su cartera** → Frame "Sin Pacientes"
 
 ```json
 {
-    "consultations": [],
-    "message": "No tienes pacientes asignados en tu cartera",
-    "detail": "Puedes asignar pacientes a tu cartera desde el módulo de pacientes. Ve a 'Pacientes' y selecciona 'Asignar a mi cartera'.",
-    "action": "Asignar pacientes",
-    "status": "SIN_PACIENTES"
+  "consultations": [],
+  "message": "No tienes pacientes asignados en tu cartera",
+  "detail": "Puedes asignar pacientes a tu cartera desde el módulo de pacientes. Ve a 'Pacientes' y selecciona 'Asignar a mi cartera'.",
+  "action": "Asignar pacientes",
+  "status": "SIN_PACIENTES"
 }
 ```
 
-**Escenario 4: Búsqueda sin resultados** -> Mostrar Frame de Sin resultados de busqueda
+**Escenario 4 — Búsqueda sin resultados** → Frame "Sin Resultados de Búsqueda"
 
 ```json
 {
-    "consultations": [],
-    "message": "No se encontraron consultas que coincidan con tu búsqueda",
-    "detail": "No hay consultas con \"Carlos\" en el nombre del paciente o de la madre. Intenta con otro término.",
-    "searchTerm": "Carlos",
-    "status": "BUSQUEDA_SIN_RESULTADOS"
+  "consultations": [],
+  "message": "No se encontraron consultas que coincidan con tu búsqueda",
+  "detail": "No hay consultas con \"Carlos\" en el nombre del paciente o de la madre. Intenta con otro término.",
+  "searchTerm": "Carlos",
+  "status": "BUSQUEDA_SIN_RESULTADOS"
 }
 ```
 
-> Ver mas: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/deployment-test/src/context/comunication-management/Documentacion.md#8-obtener-consultas-activas-de-una-enfermera-bandeja-de-consultas)
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/deployment-test/src/context/comunication-management/Documentacion.md#8-obtener-consultas-activas-de-una-enfermera-bandeja-de-consultas)
 
+---
 
-
-- **POST /messages**
+#### `POST /messages`
 
 Envía un mensaje dentro de una teleconsulta activa.
 
-
+**Request body:**
 ```json
 {
-    "consultationId": "string",
-    "senderId": "string",
-    "senderRole": "MOTHER | NURSE",
-    "content": "string"
-}
-```
-> Ver mas: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/comunication-management/Documentacion.md#2-enviar-mensaje-madre-o-enfermera)
-
-
-- **GET /chat/:consultationId**
-
-Abri chat cuando seleciono una consulta desde la bandeja de consultas
-
-```json
-{
-    "consultationId": "string",
-    "patientId": "string",
-    "nurseId": "string",
-    "messages": [
-        {
-            "id": "string",
-            "senderId": "string",
-            "senderRole": "MOTHER | NURSE",
-            "content": "string",
-            "sentAt": "2024-01-15T10:30:00.000Z"
-        }
-    ]
+  "consultationId": "string",
+  "senderId": "string",
+  "senderRole": "MOTHER | NURSE",
+  "content": "string"
 }
 ```
 
-> Ver mas: [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/comunication-management/Documentacion.md#6-obtener-chat-de-consulta-madre-o-enfermera)
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/comunication-management/Documentacion.md#2-enviar-mensaje-madre-o-enfermera)
+
+---
+
+#### `GET /chat/:consultationId`
+
+Abre el chat al seleccionar una consulta desde la Bandeja de Consultas.
+
+```json
+{
+  "consultationId": "string",
+  "patientId": "string",
+  "nurseId": "string",
+  "messages": [
+    {
+      "id": "string",
+      "senderId": "string",
+      "senderRole": "MOTHER | NURSE",
+      "content": "string",
+      "sentAt": "2024-01-15T10:30:00.000Z"
+    }
+  ]
+}
+```
+
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/comunication-management/Documentacion.md#6-obtener-chat-de-consulta-madre-o-enfermera)
+
+---
+
+#### `DELETE /consultations/close`
+
+La enfermera cierra una teleconsulta. **Requisito:** debe haber enviado al menos un mensaje de respuesta.
+
+**Request body:**
+```json
+{
+    "consultationId": "string",
+}
+```
+
+| Campo | Tipo | Requerido | Descripción                  |
+|---|---|---|------------------------------|
+| `consultationId` | string | ✅ | ID de la consulta            |
+| `nurseId` | string | ✅ | ID de la enfermera via token |
+
+**Response 200 OK**
+```json
+{
+    "message": "Consultation closed successfully"
+}
+```
+
+**Errores 400**
+
+| Error | Significado |
+|---|---|
+| `Consultation not found` | La consulta no existe |
+| `Only assigned nurse can close consultation` | Solo la enfermera asignada puede cerrar |
+| `Consultation must contain at least one nurse response before closing` | La enfermera debe responder al menos una vez |
 
 
-### Seccion Pacientes
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/deployment/src/context/comunication-management/Documentacion.md#3-cerrar-consulta-enfermera)
 
-Busqueda de la madre por dni
+---
 
+## 2. Sección: Pacientes
+
+### 2.1 Pantallas
+
+| Pantalla | Cuándo se muestra |
+|---|---|
+| **Búsqueda de madre por DNI** | Pantalla inicial de la sección Pacientes. |
+| **Pacientes registrados por la madre** | Tras encontrar a la madre, se listan sus pacientes (con su estado de asignación). |
+| **Sin pacientes registrados** | La madre no registró ningún paciente desde FerovaFamily. |
+| **Sin posta asignada** | El enfermero intenta asignarse un paciente, pero no tiene posta asignada por el admin. |
 
 <div align="center">
-<img src="resources/patient/Pacientes-Serch.png">
+<img src="resources/patient/Pacientes-Serch.png" width="260">
 </div>
-
-### Pacientes de la Madre
 
 <div align="center">
-<img src="resources/patient/Pacientes registados por la madre.png">
+<img src="resources/patient/Pacientes registados por la madre.png" width="260">
 </div>
-
 
 <div align="center">
-<img src="resources/patient/Pacientes registados por la madre-1.png">
+<img src="resources/patient/Pacientes registados por la madre-1.png" width="260">
 </div>
-
-### Caso que la madre no tenga pacientes
 
 <div align="center">
-<img src="resources/patient/CASO QUE NO HAY PACIENTES REGISTRADOS POR LA MADRE.png">
+<img src="resources/patient/CASO QUE NO HAY PACIENTES REGISTRADOS POR LA MADRE.png" width="260">
 </div>
-
-### Caso que cuando presiona el btn de presionar (asignar a mi cartera a un paciente) y dicho enfermero que lo ejecuta no tiene una posta assignada en ella.
 
 <div align="center">
-<img src="resources/patient/Group 205.png">
+<img src="resources/patient/Group 205.png" width="260">
 </div>
 
-Conectar los siguientes **Endpoints**:
+### 2.2 Endpoints
 
-
-- **GET /mother/search/{dni}**
+#### `GET /mother/search/{dni}`
 
 ```json
 {
@@ -206,9 +254,18 @@ Conectar los siguientes **Endpoints**:
   "dni": "12345678"
 }
 ```
-> Ver mas [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-mothersearchdni--buscar-madre-por-dni)
 
-- **GET /mother/{motherId}**
+**Errores 400**
+
+| Error | Significado                 |
+|---|-----------------------------|
+| `Mother not found` | No existe madre con ese DNI |
+
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-mothersearchdni--buscar-madre-por-dni)
+
+---
+
+#### `GET /mother/{motherId}`
 
 ```json
 [
@@ -231,107 +288,137 @@ Conectar los siguientes **Endpoints**:
 ]
 ```
 
-caso de que la madre no registro un paciente
+Caso de que la madre no registró ningún paciente:
 
 ```json
-  []
+[]
 ```
+
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-mothermotherid--listar-pacientes-por-madre)
 
 ---
-> Ver mas [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-mothermotherid--listar-pacientes-por-madre)
 
-
-- **POST /assign-nurse**
-
+#### `POST /assign-nurse`
 
 **Request body:**
-
 ```json
 { "patientId": "660e8400-e29b-41d4-a716-446655440001" }
-
 ```
 
-**Response 200 Ok**
-
+**Response 200 OK**
 ```json
 { "message": "Patient assigned successfully" }
 ```
 
-**Error 404**
-
+**Error 404 — sin posta asignada**
 ```json
 { "message": "Nurse is not assigned to any facility" }
 ```
 
+**Errores 400**
 
-> Ver mas [Link](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-assign-nurse--asignarse-un-paciente)
+| Error | Significado           |
+|---|-----------------------|
+| `Nurse ID no encontrado en el token` | Token inválido        |
+| `Patient not found` | El paciente no existe |
+| `Patient already has an assigned nurse` | Ya tiene enfermera asignada       |
+| `Nurse is not assigned to any facility` | Enfermera sin establecimiento        |
 
-# Flujos
 
-## Comunication + Chat
+> Ver más: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#post-assign-nurse--asignarse-un-paciente)
 
-### Scenario 1: Enfermero tiene pacientes asignados sin consultas activas de las madres
+---
 
-<div align="center">
-<img src="resources/communication/Group%20264.png">
-</div>
+## 3. Flujos
 
-Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si no hay consultas activas, se muestra un frame de Sin Consultas.
+### 3.1 Comunicación + Chat
 
-### Scenario 2: Enfermero no tiene pacientes asignados en su cartera
-
-<div align="center">
-<img src="resources/communication/Group%20267.png">
-</div>
-
-Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si no hay pacientes asignados en su cartera, se muestra un frame de Sin Pacientes.
-Y se muestra un boton para asignar pacientes el cual redirecciona a la seccion de pacientes, donde se puede buscar a la madre por dni y asignar a su paciente a la cartera del enfermero.
-
-### Scenario 3: Enferemro tiene consultas activas y busca consultas por nombre de paciente o madre
+#### Escenario 1 — Pacientes asignados, sin consultas activas
 
 <div align="center">
-<img src="resources/communication/Group%20266.png">
+<img src="resources/communication/Group%20264.png" width="280">
 </div>
 
-Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si el enfermero realiza una busqueda por nombre de paciente o madre y no hay resultados, se muestra un frame de Sin resultados de busqueda.
-Caso contrario, se muestran las consultas que coinciden con el termino de busqueda.
+1. Desde Home, el enfermero entra a "Consultas".
+2. Se redirige a la Bandeja de Consultas (`GET /communication/consultations/nurse`).
+3. Como no hay consultas activas, se muestra el frame **Sin Consultas**.
 
-### Scenario 4: Enfermero tiene consultas activas y abre el chat de la consulta selecionada, envia un mensaje y cierra la consulta
+#### Escenario 2 — Sin pacientes asignados en la cartera
 
 <div align="center">
-<img src="resources/communication/Group%20265.png">
+<img src="resources/communication/Group%20267.png" width="280">
 </div>
 
-Desde Home cuando accedo a la opcion de consultas, se redirecciona a la bandeja de consultas, donde se listan las consultas activas de las madres. Si el enfermero selecciona una consulta de la bandeja le abrira el chat con la madre el cual podra enviarle un mensaje y cerrar dicha consulta si todo las dudas de la madre se aclaren.
-Dicha Consulta cerrada actualizada la bandeja de consulta el cual dicha consulta cerrada se elimina de la bandeja de consultas.
+1. Desde Home, el enfermero entra a "Consultas".
+2. Se redirige a la Bandeja de Consultas.
+3. Como no tiene pacientes asignados, se muestra el frame **Sin Pacientes**, con un botón **"Asignar pacientes"**.
+4. Al presionar el botón, se redirige a la sección Pacientes, donde puede buscar a la madre por DNI y asignar su paciente a la cartera.
 
-## Asignacion de pacientes a la cartera del enfemero (Seccion Pacientes)
-
-### Scenario 1: Si la madre encontrada por el dni no tiene pacientes registrados desde FerovaFamily
+#### Escenario 3 — Búsqueda de consultas por nombre
 
 <div align="center">
-<img src="resources/patient/Group%20261.png">
+<img src="resources/communication/Group%20266.png" width="280">
 </div>
 
-Desde Home cuando accedo a la opcion de pacientes, se redirreciona a un buscador en el cual introducimos el dni de la madre, para assignar a un paciente que ella registro desde Ferova Family.
-Pero Caso de que no registro un paciente la madre desde FerovaFamily, aparecera un frame de no se encontraro niños registrados,
+1. Desde Home, el enfermero entra a "Consultas" y ve la Bandeja de Consultas.
+2. Escribe un nombre de paciente o madre en el buscador.
+3. Si no hay coincidencias, se muestra el frame **Sin Resultados de Búsqueda**.
+4. Si hay coincidencias, se muestran solo las consultas que coinciden con el término buscado.
 
-### Scenario 2: Si el enfemero no tiene una posta assignada por parte del admin
+#### Escenario 4 — Abrir chat, enviar mensaje y cerrar consulta
 
 <div align="center">
-<img src="resources/patient/Group%20263.png">
+<img src="resources/communication/Group%20265.png" width="280">
 </div>
 
-Desde Home cuando accedo a la opcion de pacientes, se redirreciona a un buscador en el cual introduzco el dni de la madre, para asignar a un paciente que dicha madre registro desde ferovafamily.
-Una vez introducido el dni y selecionar a la madre de la busqueda, se mostraran los pacientes que registro dicha madre, una vez que el enfermero quiere asignar dicho paciente a su cartera se mostrara un mensaje de modal de **Nurse is not assigned to any facilty**, el cual representa de que el enfermero no tiene una posta asignada por parte del admin y no podra asignar a su cartera a dicho paciente seleccionado.
+1. Desde Home, el enfermero entra a "Consultas" y ve la Bandeja de Consultas.
+2. Selecciona una consulta → se abre el Chat (`GET /chat/:consultationId`).
+3. Envía un mensaje a la madre (`POST /messages`).
+4. Si la duda de la madre quedó resuelta, presiona el botón de cerrar consulta.
+5. Se muestra el modal de confirmación "¿Cerrar consulta?".
+6. Al confirmar, se llama a `DELETE /consultations/close`. La consulta se cierra y se elimina de la Bandeja de Consultas (la lista se actualiza).
 
-### Scenario 3: Si el enfemero tiene una posta assignada por parte del admin entonces podra assingar a su carter a un paciente
+> ⚠️ **Implicación de UX:** el cierre falla con error 400 (`Consultation must contain at least one nurse response before closing`) si el enfermero aún no envió ningún mensaje. El botón de cerrar debería deshabilitarse, o el modal no debería mostrarse, hasta que se haya enviado al menos un mensaje — así se evita mostrarle al usuario un error que se puede prevenir desde la UI.
+
+### 3.2 Asignación de pacientes a la cartera del enfermero
+
+#### Escenario 1 — La madre no tiene pacientes registrados en FerovaFamily
 
 <div align="center">
-<img src="resources/patient/Group%20262.png">
+<img src="resources/patient/Group%20261.png" width="280">
 </div>
 
-Desde Home cuando accedo a la opcion de pacientes se redirreciona a un buscador en el cual introducimos el dni de la madre, para assignar a un paciente que dicha madre registro desde ferovafamily.
-Una vez introducido el dni y seleccionar a la madre de la busqueda, se mostraran los pacientes que registro dicha madre, una vez que el enfermero quiera asignar dicho paciente a su cartera presiona le btn de assignar cambiara el estado del card pasando de **Sin asignar -> Asignado**.
+1. Desde Home, el enfermero entra a "Pacientes".
+2. Ingresa el DNI de la madre (`GET /mother/search/{dni}`).
+3. Si la madre no registró ningún paciente desde FerovaFamily, se muestra el frame **Sin pacientes registrados**.
 
-> Ari si es posible haz una animacion al momento de presionar el btn de assignar paciente en si seria bueno la verdad intentalo es un reto (Dyaron lo hizo en si recuerdo bien en Flutter, habla con el de ello).
+#### Escenario 2 — El enfermero no tiene posta asignada por el admin
+
+<div align="center">
+<img src="resources/patient/Group%20263.png" width="280">
+</div>
+
+1. Desde Home, el enfermero entra a "Pacientes" e ingresa el DNI de la madre.
+2. Selecciona a la madre en los resultados → se listan sus pacientes (`GET /mother/{motherId}`).
+3. Presiona "Asignar" sobre un paciente (`POST /assign-nurse`).
+4. Como el enfermero no tiene posta asignada por el admin, se muestra el modal **"Nurse is not assigned to any facility"**.
+5. El paciente no se asigna a la cartera.
+
+#### Escenario 3 — El enfermero sí tiene posta asignada
+
+<div align="center">
+<img src="resources/patient/Group%20262.png" width="280">
+</div>
+
+1. Desde Home, el enfermero entra a "Pacientes" e ingresa el DNI de la madre.
+2. Selecciona a la madre en los resultados → se listan sus pacientes.
+3. Presiona "Asignar" sobre un paciente (`POST /assign-nurse`).
+4. Como sí tiene posta asignada, la asignación es exitosa y el card cambia de estado: **Sin asignar → Asignado**.
+
+---
+
+## 4. Notas y pendientes
+
+**Sugerencia de UX (no bloqueante):**
+
+- Animación al presionar el botón "Asignar paciente" (transición de estado "Sin asignar → Asignado"). Dyaron ya implementó algo similar en Flutter — vale la pena consultarle antes de construir esto desde cero.
