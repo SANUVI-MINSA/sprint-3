@@ -245,7 +245,11 @@ La enfermera cierra una teleconsulta. **Requisito:** debe haber enviado al menos
 
 ### 2.2 Endpoints
 
-#### `GET /mother/search/{dni}`
+#### `GET /mother/search/{search}`
+
+```
+searchTermin: "123..."
+```
 
 ```json
 {
@@ -254,6 +258,27 @@ La enfermera cierra una teleconsulta. **Requisito:** debe haber enviado al menos
   "dni": "12345678"
 }
 ```
+
+```
+searchTermin: "12345678"
+```
+
+```json
+{
+  "motherId": "550e8400-...",
+  "fullName": "Diana Carrillo",
+  "dni": "12345678"
+}
+```
+
+```
+searchTermin: "12345"
+```
+
+```json
+  { "error": "No mothers found matching the search criteria" }
+```
+
 
 **Errores 400**
 

@@ -66,15 +66,14 @@
 
 Lista los pacientes en la cartera del enfermero. Se usa tanto en **Historial Médico** como en **Control de Hemoglobina** (sección 2) para seleccionar al paciente sobre el que se va a registrar información.
 
+```
+searchTermin: "D"
+
+```
+
 ```json
 [
-  {
-    "patientId": "b77eab3c-3ab7-40b8-9fb3-e4dd7b63d4b6",
-    "fullName": "Mateo Perez",
-    "gender": "MALE",
-    "status": "ACTIVE",
-    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
-  },
+
   {
     "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
     "fullName": "Diana Lucia Briceño Vera",
@@ -88,25 +87,41 @@ Lista los pacientes en la cartera del enfermero. Se usa tanto en **Historial Mé
     "gender": "MALE",
     "status": "ACTIVE",
     "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
-  },
+  }
+]
+```
+
+
+```
+searchTermin: "Diana"
+
+```
+
+```json
+[
+
   {
-    "patientId": "072a086a-68c4-4952-bbf8-0362d23d3a22",
-    "fullName": "Pepe DeTal",
+    "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
+    "fullName": "Diana Lucia Briceño Vera",
     "gender": "MALE",
     "status": "ACTIVE",
     "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
-  },
+  }
+]
+```
+
+```
+searchTermin: "Gonzalez"
+
+```
+
+```json
+[
+
   {
-    "patientId": "40094724-fc8f-44cb-9b34-d349f5de97cb",
-    "fullName": "testeo tal",
-    "gender": "FEMALE",
-    "status": "ACTIVE",
-    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
-  },
-  {
-    "patientId": "0c311ed8-ac1e-43d3-ba9c-d07518c23912",
-    "fullName": "Paoly Gonzalez",
-    "gender": "FEMALE",
+    "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
+    "fullName": "Diana Lucia Briceño Vera",
+    "gender": "MALE",
     "status": "ACTIVE",
     "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
   }
