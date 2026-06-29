@@ -42,7 +42,7 @@ de pacientes para dar de alta.
 ###### Scenario si no hay pacientes para dar de alta
 
 Si no hay pacientes para dar de alta, me aperece el frame e que no hay pacientes para dar de alta
-y un btn para assignar a un paciente que me redirige a la seccion pacientes (que lo esta haciendo) solo seria que
+y un btn para assignar a un paciente que me redirige a la seccion pacientes (que lo esta haciendo a ariana) solo seria que
 si hay una array vacia de pacientes del endpoint mostrar dicho frame.
 
 
@@ -57,3 +57,7 @@ si hay una array vacia de pacientes del endpoint mostrar dicho frame.
 <div align="center">
 <img src="resources/discarged/Group%20276.png">
 </div>
+
+##### Endpoints a conectar
+
+- 
