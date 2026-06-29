@@ -66,73 +66,170 @@
 
 Lista los pacientes en la cartera del enfermero. Se usa tanto en **Historial Médico** como en **Control de Hemoglobina** (sección 2) para seleccionar al paciente sobre el que se va a registrar información.
 
-```
-searchTermin: "D"
+Retorna los pacientes con `status = ACTIVE` asignados a la enfermera autenticada.
 
+**Reglas de negocio:**
+- Solo retorna pacientes con `status = ACTIVE`
+- `nurseId` se extrae del token (no se envía en la URL)
+- `searchTerm` es opcional y filtra por nombre completo (coincidencia parcial)
+
+**Query params:**
+
+| Parámetro | Tipo | Requerido | Descripción |
+|---|---|---|---|
+| searchTerm | string | ❌ | Filtra por nombre o apellido (coincidencia parcial) |
+
+**Status de respuesta:**
+
+| Status | Significado | Cuándo ocurre |
+|---|---|---|
+| SUCCESS | Datos cargados exitosamente | Hay pacientes asignados y no hay búsqueda |
+| EMPTY | Sin datos | No hay pacientes asignados |
+| SEARCH_SUCCESS | Búsqueda con resultados | La búsqueda encontró coincidencias |
+| SEARCH_EMPTY | Búsqueda sin resultados | La búsqueda no encontró coincidencias |
+
+**Escenario 1: Con pacientes asignados (sin búsqueda)**
+
+Request:
+```http
+GET /api/patients/nurse
+Authorization: Bearer <token>
 ```
 
+Response 200 OK:
 ```json
-[
-
-  {
-    "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
-    "fullName": "Diana Lucia Briceño Vera",
-    "gender": "MALE",
-    "status": "ACTIVE",
-    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
-  },
-  {
-    "patientId": "8ad97c1d-7a3c-4101-b086-8551b0a85f6a",
-    "fullName": "Daniel Baca",
-    "gender": "MALE",
-    "status": "ACTIVE",
-    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+{
+  "success": true,
+  "status": "SUCCESS",
+  "message": "Pacientes asignados recuperados exitosamente",
+  "data": {
+    "patients": [
+      {
+        "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
+        "fullName": "Diana Lucia Briceño Vera",
+        "gender": "FEMALE",
+        "status": "ACTIVE",
+        "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+      },
+      {
+        "patientId": "8ad97c1d-7a3c-4101-b086-8551b0a85f6a",
+        "fullName": "Daniel Baca",
+        "gender": "MALE",
+        "status": "ACTIVE",
+        "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+      }
+    ],
+    "total": 2,
+    "nurseId": "770e8400-e29b-41d4-a716-446655440000"
   }
-]
+}
 ```
 
+**Escenario 2: Sin pacientes asignados**
 
+Request:
+```http
+GET /api/patients/nurse
+Authorization: Bearer <token>
 ```
-searchTermin: "Diana"
 
-```
-
+Response 200 OK:
 ```json
-[
-
-  {
-    "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
-    "fullName": "Diana Lucia Briceño Vera",
-    "gender": "MALE",
-    "status": "ACTIVE",
-    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+{
+  "success": true,
+  "status": "EMPTY",
+  "message": "No tienes pacientes asignados actualmente",
+  "data": {
+    "patients": [],
+    "total": 0,
+    "nurseId": "770e8400-e29b-41d4-a716-446655440000"
   }
-]
+}
 ```
 
-```
-searchTermin: "Gonzalez"
+Caso de arreglo vacío → mostrar el frame **Sin pacientes asignados**, con un botón "Asignar pacientes" que redirige a la sección Pacientes. Esto aplica tanto en Historial Médico como en Control de Hemoglobina.
 
+**Escenario 3: Búsqueda con resultados**
+
+Request:
+```http
+GET /api/patients/nurse?searchTerm=Diana
+Authorization: Bearer <token>
 ```
 
+Response 200 OK:
 ```json
-[
-
-  {
-    "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
-    "fullName": "Diana Lucia Briceño Vera",
-    "gender": "MALE",
-    "status": "ACTIVE",
-    "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+{
+  "success": true,
+  "status": "SEARCH_SUCCESS",
+  "message": "Se encontraron 1 paciente(s) que coinciden con \"Diana\"",
+  "data": {
+    "patients": [
+      {
+        "patientId": "bd16a94a-7171-4f5b-a561-0cf10db13770",
+        "fullName": "Diana Lucia Briceño Vera",
+        "gender": "FEMALE",
+        "status": "ACTIVE",
+        "facilityId": "33e8ab63-2875-41b5-91f1-ac9a37d1ddc6"
+      }
+    ],
+    "total": 1,
+    "searchTerm": "Diana",
+    "nurseId": "770e8400-e29b-41d4-a716-446655440000"
   }
-]
+}
 ```
 
-Caso de arreglo vacío → mostrar el frame **Sin pacientes asignados**, con un botón "Asignar pacientes" que redirige a la sección Pacientes. Esto aplica tanto en Historial Médico como en Control de Hemoglobina:
+**Escenario 4: Búsqueda sin resultados**
 
+Request:
+```http
+GET /api/patients/nurse?searchTerm=Gonzalez
+Authorization: Bearer <token>
+```
+
+Response 200 OK:
 ```json
-[]
+{
+  "success": true,
+  "status": "SEARCH_EMPTY",
+  "message": "No se encontraron pacientes asignados que coincidan con \"Gonzalez\"",
+  "data": {
+    "patients": [],
+    "total": 0,
+    "searchTerm": "Gonzalez",
+    "nurseId": "770e8400-e29b-41d4-a716-446655440000"
+  }
+}
 ```
+
+UI Recomendada (sin resultados / sin pacientes):
+
+```
+┌─────────────────────────────────────────┐
+│  📋 Sin pacientes asignados             │
+│                                         │
+│  Actualmente no tienes pacientes        │
+│  asignados.                             │
+│                                         │
+│  [➕ Asignar paciente]                  │
+└─────────────────────────────────────────┘
+```
+
+```
+┌─────────────────────────────────────────┐
+│  🔍 No se encontraron resultados        │
+│                                         │
+│  No hay pacientes que coincidan con     │
+│  "Gonzalez"                             │
+└─────────────────────────────────────────┘
+```
+
+**Errores 400:**
+
+| Error | Causa |
+|---|---|
+| Nurse ID no encontrado en el token | Token inválido o sin claim nurseId |
 
 > Ver más info: [Documentación backend](https://github.com/SANUVI-MINSA/backend-ferova/blob/develop/src/context/patient-management/Documentation.md#get-nurse--listar-pacientes-asignados)
 
@@ -469,7 +566,7 @@ Devuelve el historial de controles de hemoglobina de un historial médico, con p
 ```
 
 La tendencia se calcula como: último nivel – primer nivel
-    
+
 - UP: evolución > 0 (mejorando)
 - DOWN: evolución < 0 (empeorando)
 - STABLE: evolución = 0
@@ -538,9 +635,8 @@ Content-Disposition: attachment; filename=hemoglobin-report.pdf
 2. Se muestra la lista de pacientes de su cartera (`GET patients/nurse`).
 3. Selecciona un paciente.
 4. Se verifica si tiene historial médico (`GET /{patientId}/medical-record/check`):
-    - Si `hasMedicalRecord` es `false` → se muestra el frame **"Falta historial médico"**, con un botón para registrar el historial de ese paciente primero (`POST /medical-record`).
-    - Si `hasMedicalRecord` es `true` → se abre el formulario de registro de control (`POST /hemoglobin-control`).
+   - Si `hasMedicalRecord` es `false` → se muestra el frame **"Falta historial médico"**, con un botón para registrar el historial de ese paciente primero (`POST /medical-record`).
+   - Si `hasMedicalRecord` es `true` → se abre el formulario de registro de control (`POST /hemoglobin-control`).
 5. Al registrar el control exitosamente, se muestra un frame de celebración y se vuelve a la lista de pacientes de Control de Hemoglobina.
 
 > ⚠️ No se incluyó una captura del frame de "celebración" mencionado en este paso — falta ese asset visual eso lo haces vos dyron un frame de celbracion por el registro de un control de hemoglobina.
-
